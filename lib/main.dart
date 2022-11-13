@@ -1,4 +1,8 @@
+import 'dart:convert';
 import 'dart:ui';
+import 'package:countries_app/models/country.dart';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 
@@ -7,6 +11,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({super.key});
 
   // This widget is the root of your application.
@@ -16,153 +21,97 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         backgroundColor: const Color(0xFF000f24),
         body: SafeArea(
-          child: Container(
+          child: Column(
+            children: [
+              Expanded(
 
-            margin: const EdgeInsets.all(20),
-            child: Column(
+                  child: Container(
 
-                children: [
-                  SizedBox(
-
-                      child: Expanded(
-                          child: Row(
-                              children: const [
-                                Text('Explore.',
-                                    style: TextStyle(fontFamily: 'Elsie Swash Caps', color: Colors.white,fontSize: 50)),
-
-                              ]
-                          )
-                      )
-
-                  ),
-                  Card(
-                    margin: const EdgeInsets.only(top: 20),
-                    color: const Color(0xFF1e2c41),
-                    child: Column(
-
-                        children:
-                        const [
-                          Icon(Icons.search_rounded),
-                          TextField(
-
-                            obscureText: true,
-
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.all(16),
-                              labelText: 'Search Country',
-                              hintText: 'Country',
-                            ),
-                          ),
-                        ],
-                    )
-
-
-                  ),
-                  Container(
-
-                    margin: EdgeInsets.symmetric(vertical: 20),
-                    child:
-                    Row(
-
-                      children: [
-                        Expanded(
-                            flex: 1,
-                            child: Container(
-                                width: 50,
-                                color: Colors.transparent,
-                                padding: const EdgeInsets.all(2),
-                                child:
-                                Row(
-                                    children: const [
-                                      Icon(Icons.search, color: Colors.white,),
-                                      Text('EN', style: TextStyle(color: Colors.white))
-                                    ]
-
-                                )
-                            )
-                        ),
-                        Expanded(
-                            flex: 5,
-                            child: SizedBox(
-
-                            )
-                        ),
-                        Expanded(
-                            flex: 1,
-                            child: Container(
-                                width: 50,
-                                color: Colors.transparent,
-                                padding: const EdgeInsets.all(2),
-                                child:
-                                Row(
-                                    children: const [
-                                      Icon(Icons.filter, color: Colors.white,),
-                                      Text('Filter', style: TextStyle(color: Colors.white))
-                                    ]
-
-                                )
-                            )
-                        ),
-
-                      ],
-                    )
-                  ),
-
-                  SingleChildScrollView(
-
+                      margin: const EdgeInsets.all(30),
                       child: Column(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
 
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(top: 10),
-                                child: const Text('A', style: TextStyle(color: Colors.white)),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 10),
-                                    height: 50,
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.only(right: 30),
-                                          width: 50,
-                                          height: 50,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                                            color: Colors.grey[300],
-                                          ),
-                                          child: Image(
-                                            image: AssetImage('images/ebube-working.jpg'),
-                                          ),
-                                        ),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text('Angola', style: TextStyle(color: Colors.white, fontSize: 15)),
-                                            Text('Luanda', style: TextStyle(color: Colors.white, fontSize: 15)),
-                                          ],
+                          children: [
+                            Container(
+
+                                child: Row(
+                                    children: const [
+                                      Text('Explore.',
+                                          style: TextStyle(fontFamily: 'Elsie Swash Caps', color: Colors.white,fontSize: 50)),
+
+                                    ]
+                                )
+                            ),
+                            SearchBar(),
+
+                            Container(
+
+                                margin: EdgeInsets.symmetric(vertical: 20),
+                                child:
+                                Row(
+
+                                  children: [
+                                    Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                                color: Colors.transparent,
+                                                border: Border.all(color: Colors.white)
+                                            ),
+
+                                            width: 50,
+                                            padding: const EdgeInsets.all(2),
+                                            child: Center(
+                                              widthFactor: 20,
+                                              child: Row(
+                                                  children: const [
+                                                    Icon(Icons.search, color: Colors.white,),
+                                                    Text('EN', style: TextStyle(color: Colors.white))
+                                                  ]
+
+                                              ),
+                                            )
+
                                         )
+                                    ),
+                                    Expanded(
+                                        flex: 5,
+                                        child: SizedBox(
 
-                                      ],
-                                    )
-                                  )
-                                ]
-                              )
-                            ]
-                          )
-                        ]
+                                        )
+                                    ),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                                color: Colors.transparent,
+                                                border: Border.all(color: Colors.white)
+                                            ),
+                                            width: 50,
+                                            padding: const EdgeInsets.all(2),
+                                            child:
+                                            Row(
+                                                children: const [
+                                                  Icon(Icons.filter_7_sharp, color: Colors.white,),
+                                                  Text('Filter', style: TextStyle(color: Colors.white))
+                                                ]
+
+                                            )
+                                        )
+                                    ),
+
+                                  ],
+                                )
+                            ),
+
+                            Countries()
+
+                          ]
                       )
                   )
-
-            ]
-            )
+              )
+            ],
           )
 
 
@@ -173,87 +122,264 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// class MyHomePage extends StatefulWidget {
-//   const MyHomePage({super.key, required this.title});
-//
-//   // This widget is the home page of your application. It is stateful, meaning
-//   // that it has a State object (defined below) that contains fields that affect
-//   // how it looks.
-//
-//   // This class is the configuration for the state. It holds the values (in this
-//   // case the title) provided by the parent (in this case the App widget) and
-//   // used by the build method of the State. Fields in a Widget subclass are
-//   // always marked "final".
-//
-//   final String title;
-//
-//   @override
-//   State<MyHomePage> createState() => _MyHomePageState();
-// }
-//
-// class _MyHomePageState extends State<MyHomePage> {
-//   int _counter = 0;
-//
-//   void _incrementCounter() {
-//     setState(() {
-//       // This call to setState tells the Flutter framework that something has
-//       // changed in this State, which causes it to rerun the build method below
-//       // so that the display can reflect the updated values. If we changed
-//       // _counter without calling setState(), then the build method would not be
-//       // called again, and so nothing would appear to happen.
-//       _counter++;
-//     });
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     // This method is rerun every time setState is called, for instance as done
-//     // by the _incrementCounter method above.
-//     //
-//     // The Flutter framework has been optimized to make rerunning build methods
-//     // fast, so that you can just rebuild anything that needs updating rather
-//     // than having to individually change instances of widgets.
-//     return Scaffold(
-//       appBar: AppBar(
-//         // Here we take the value from the MyHomePage object that was created by
-//         // the App.build method, and use it to set our appbar title.
-//         title: Text(widget.title),
-//       ),
-//       body: Center(
-//         // Center is a layout widget. It takes a single child and positions it
-//         // in the middle of the parent.
-//         child: Column(
-//           // Column is also a layout widget. It takes a list of children and
-//           // arranges them vertically. By default, it sizes itself to fit its
-//           // children horizontally, and tries to be as tall as its parent.
-//           //
-//           // Invoke "debug painting" (press "p" in the console, choose the
-//           // "Toggle Debug Paint" action from the Flutter Inspector in Android
-//           // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-//           // to see the wireframe for each widget.
-//           //
-//           // Column has various properties to control how it sizes itself and
-//           // how it positions its children. Here we use mainAxisAlignment to
-//           // center the children vertically; the main axis here is the vertical
-//           // axis because Columns are vertical (the cross axis would be
-//           // horizontal).
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             const Text(
-//               'You have pushed the button this many times:',
-//             ),
-//             Text(
-//               '$_counter',
-//               style: Theme.of(context).textTheme.headline4,
-//             ),
-//           ],
-//         ),
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: _incrementCounter,
-//         tooltip: 'Increment',
-//         child: const Icon(Icons.add),
-//       ), // This trailing comma makes auto-formatting nicer for build methods.
-//     );
-//   }
-// }
+class CountryLine extends StatefulWidget {
+  final Country country;
+
+  CountryLine({Key? key,
+    required this.country
+  }) : super(key: key) {
+    createState();
+  }
+
+  @override
+  State<CountryLine> createState() => _CountryLineState(country: this.country);
+}
+
+class _CountryLineState extends State<CountryLine> {
+
+  final Country country;
+
+  _CountryLineState({
+    required this.country
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: const EdgeInsets.only(top: 20),
+        height: 50,
+        child: Row(
+          children: [
+            Container(
+              margin: EdgeInsets.only(right: 30),
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                color: Colors.grey[300],
+              ),
+              child: Image(
+                image: NetworkImage(country.flagUrl),
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(country.name, style: TextStyle(color: Colors.white, fontSize: 15)),
+                Text(country.capital, style: TextStyle(color: Colors.white38, fontSize: 15)),
+              ],
+            )
+
+          ],
+        )
+    );
+  }
+}
+
+
+class CountriesGroup extends StatefulWidget {
+  final String firstLetter;
+  final List<Country> countries;
+
+  CountriesGroup({Key? key,
+    required this.firstLetter,
+    required this.countries
+  }) : super(key: key) {
+    createState();
+  }
+
+  @override
+  State<CountriesGroup> createState() => _CountriesGroupState(firstLetter: this.firstLetter, countries: this.countries);
+}
+
+class _CountriesGroupState extends State<CountriesGroup> {
+  final String firstLetter;
+  final List<Country> countries;
+
+  _CountriesGroupState({
+    required this.firstLetter,
+    required this.countries
+  });
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 25),
+            child: Text(firstLetter, style: TextStyle(color: Colors.white)),
+          ),
+          Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: countries.map((country) => CountryLine(country: country)).toList()
+          )
+        ]
+    );
+  }
+}
+
+
+class Countries extends StatefulWidget {
+  const Countries({Key? key}) : super(key: key);
+
+  @override
+  State<Countries> createState() => _CountriesState();
+}
+
+class _CountriesState extends State<Countries> {
+  late Map<String, List<Country>> countries;
+
+  @override
+  void initState() {
+    print('Passed Here first');
+    super.initState();
+    fetchCountriesMap();
+  }
+
+  void fetchCountriesMap() async {
+    var c = await fetchCountries();
+    print('Passed Here  2');
+    setState(() {
+      countries = c;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    try {
+      return Expanded(child:
+
+        SingleChildScrollView(
+
+          child: Column(
+              children:
+              countries.keys.map((letter) {
+                return CountriesGroup(firstLetter: letter, countries: countries[letter]?? []);
+              }).toList()
+          )
+      ));
+    } catch (e) {
+      return Container();
+    }
+
+  }
+}
+
+
+class SearchBar extends StatefulWidget {
+  const SearchBar({Key? key}) : super(key: key);
+
+  @override
+  State<SearchBar> createState() => _SearchBarState();
+}
+
+class _SearchBarState extends State<SearchBar> {
+  String searchQuery = "";
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          border: Border.all(color: Colors.white70),
+          color: const Color(0xFF1e2c41),
+        ),
+        margin: const EdgeInsets.only(top: 20),
+
+        child: Row(
+
+          children:
+          [
+            Expanded(
+              flex: 1,
+              child: Icon(Icons.search_rounded, color: Colors.white,),
+            ),
+
+            Expanded(
+              flex: 9,
+                child: TextField(
+                  selectionWidthStyle: BoxWidthStyle.max,
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    contentPadding: EdgeInsets.all(16),
+                    hintText: 'Search Country',
+                    hintStyle: TextStyle(color: Colors.white38)
+
+                  ),
+                  onChanged: (text){
+                    setState(() {
+                      searchQuery = text;
+                    });
+                  },
+                ),
+            )
+          ],
+        )
+
+
+    );
+  }
+}
+
+Future<Map<String, List<Country>>> fetchCountries() async {
+  final response = await http
+      .get(Uri.parse('https://restcountries.com/v3.1/all'));
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    if (kDebugMode) {
+      print(response);
+    }
+
+    List<String> lettersOfAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+    List<dynamic> responseList = jsonDecode(response.body);
+
+
+    Map<String, List<Country>> countriesGroup = {};
+    lettersOfAlphabet.forEach((letter) {
+      countriesGroup[letter] = [];
+    });
+
+    var counting = 0;
+    responseList.forEach((country) {
+      // Country c = Country.fromJson(country);
+      // countriesGroup[c.name[0].toUpperCase()]?.add(c);
+
+      try {
+        Country c = Country.fromJson(country);
+        countriesGroup[c.name[0].toUpperCase()]?.add(c);
+      } catch (e) {
+
+        counting += 1;
+        if(counting == 1) print(country);
+
+
+      }
+
+
+      });
+    print('Passed Here');
+    return countriesGroup;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load album');
+  }
+}
+
+
+

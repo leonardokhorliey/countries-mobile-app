@@ -1,16 +1,33 @@
-# countries_app
+# Countries App
 
-A new Flutter project.
+Mobile App with details of countries of the world.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+```
+git clone
+cd countries_app
+flutter run
+```
 
-A few resources to get you started if this is your first Flutter project:
+## Structure
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+The major code implementation can be found in `lib/main.dart`. The `android` and `ios` folders contain the build for the respective Operating Systems.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Packages Used
+
+`FontAwesome` was implemented for the icons for the page.
+
+
+## API
+
+[Countries API](https://restcountries.com/v3.1/all)
+
+## More
+
+Further work can be done ro improve the UI and general accessibility and interactivity of the App.
+
+## Appetize URL
+
+
+[Live App on Pixel 6 Android 12](https://appetize.io/app/rxo4hcvyvdzrvwiecwf5dcnvam?device=pixel6&osVersion=12.0&scale=75)
