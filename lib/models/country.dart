@@ -3,7 +3,7 @@
 class Country {
   final String name;
   final String capital;
-  final int population;
+  final double population;
   final String region;
   final String motto;
   final String language;
@@ -46,6 +46,32 @@ class Country {
     required this.timezone,
 
   });
+
+  factory Country.empty() {
+    return const Country (
+      name: '',
+      capital: '',
+      area: 0,
+      currency: '' ,
+      diallingCode: '',
+      drivingSide: '',
+      dteformat: 'dd/mm/yyyy',
+      flagUrl: '',
+      gdp: 2.5,
+      government: '',
+      independence: '',
+      language: '',
+      logoUrl: '',
+      mapUrl: '',
+      motto: '',
+      population: 0,
+      region: '',
+      religion: '',
+      timezone: ''
+    );
+
+
+  }
 
   factory Country.fromJson(Map<String, dynamic> json) {
     return Country(
